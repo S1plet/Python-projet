@@ -2,6 +2,8 @@ Project members : Felix LANG, Pascal LAM
 
 Github repository : https://github.com/S1plet/Python-projet
 
+We used the LiveShare extension to code together, but Pascal pushed the code
+
 Main functionalites:
  - Extract names of the presidents from the names of the text files
  - Associate a first name with each president
