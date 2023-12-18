@@ -68,6 +68,7 @@ def _TF_Score(file):
     return(_wordOccurences(text))
 
 def list_tfScores(cleaned_d):
+    global l 
     l = []
     for file in os.listdir(cleaned_d):
         f = open(cleaned_d + "/" + file, "r", encoding="utf-8")
@@ -75,6 +76,7 @@ def list_tfScores(cleaned_d):
     return l
 
 def IDF_score(listOfTFScores):
+    global idf_dict
     idf_dict = {}
     for dico in listOfTFScores:
         for key in dico.keys():
@@ -87,7 +89,8 @@ def IDF_score(listOfTFScores):
         for dico in listOfTFScores:
             if key in dico.keys():
                 appearsInFile += 1
-        idf_dict[key] = math.log((8/appearsInFile)+1)
+        idf_dict[key] = math.log10((8/appearsInFile))
+    del idf_dict['']
     return idf_dict
 
 def TF_IDF_Matrix(idf_dict,list_tf):
@@ -98,9 +101,44 @@ def TF_IDF_Matrix(idf_dict,list_tf):
             if key not in dict.keys():
                 score_list.append(0)
             else:
-                score_list.append(idf_dict[key]*dict[key])
+                score_list.append(round(idf_dict[key]*dict[key],3))
         mat.append((key,score_list))
     return mat 
+
+#Calculate the TF-IDF Matrix for the question
+def question_tokenization(question: str):
+    question = _removePunctuationInText(question,list(punctuation))
+    question = re.sub(" +", " ", question)
+    question = question.casefold()
+    l_question = question.split(" ")
+    if l_question[len(l_question)-1] == "":
+        l_question = l_question[:-1]
+    return l_question
+
+def question_words_in_corpus(list_words: list, idf_dict: dict):
+    words_in_corpus = []
+    for word in list_words:
+        if word in idf_dict.keys():
+            words_in_corpus.append(word)
+    return words_in_corpus
+
+def TF_IDF_question(question):
+    TfIdf_score = {}
+    list_question = question_tokenization(question)
+    for word in list_question:
+        if word in TfIdf_score:
+            TfIdf_score[word] += 1
+        else:
+            TfIdf_score[word] = 1
+    for key in TfIdf_score.items():
+        TfIdf_score[key] = TfIdf_score[key]/len(list_question)
+    idf_scores = idf_dict
+    for key in TfIdf_score.keys():
+        if key in idf_scores:
+            TfIdf_score[key] = TfIdf_score[key]*idf_scores[key]
+    return TfIdf_score
+
+    
 
 def menu():
     print("Choose between the following options:")
@@ -113,41 +151,6 @@ def menu():
     print("[7]: Display the IDF-Score for each word")
     print("[8]: Display the TF-IDF Matrix")
     print("[9]: Exit")
-
-
-
-
-        
-
-                                            
-                                             
-                                        
-                                       
-                                       
-                                              
-                                          
-                                        
-                                       
-                                     
-                                     
-                                   
-                                      
-                                               
-                                                
-                                          
-                                           
-                                               
-                                        
-                                        
-
-
-
-
-
-
-
-
-
 
 
 
