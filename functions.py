@@ -101,8 +101,8 @@ def TF_IDF_Matrix(idf_dict,list_tf):
             if key not in dict.keys():
                 score_list.append(0)
             else:
-                score_list.append(round(idf_dict[key]*dict[key],3))
-        mat.append((key,score_list))
+                score_list.append(round(idf_dict[key]*dict[key],2))
+        mat.append(score_list)
     return mat 
 
 #Calculate the TF-IDF Matrix for the question
@@ -122,22 +122,26 @@ def question_words_in_corpus(list_words: list, idf_dict: dict):
             words_in_corpus.append(word)
     return words_in_corpus
 
-def TF_IDF_question(question):
-    TfIdf_score = {}
+def TF_IDF_question(question: str):
+    TfIdf_score = []
     list_question = question_tokenization(question)
-    for word in list_question:
-        if word in TfIdf_score:
-            TfIdf_score[word] += 1
+    for word in idf_dict.keys():
+        if word not in question_words_in_corpus(list_question, idf_dict):
+            TfIdf_score.append(0)
         else:
-            TfIdf_score[word] = 1
-    for key in TfIdf_score.items():
-        TfIdf_score[key] = TfIdf_score[key]/len(list_question)
-    idf_scores = idf_dict
-    for key in TfIdf_score.keys():
-        if key in idf_scores:
-            TfIdf_score[key] = TfIdf_score[key]*idf_scores[key]
+            tfscore = 0
+            for term in question_words_in_corpus(list_question, idf_dict):
+                if term == word:
+                    tfscore += 1
+            TfIdf_score.append(round(tfscore*idf_dict[word],3))
     return TfIdf_score
+                
+                
+            
 
+#Calculating similarity
+def cosine_similarity():
+    pass
     
 
 def menu():
