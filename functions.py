@@ -3,6 +3,7 @@ from shutil import rmtree
 from string import punctuation
 import re
 import math
+import numpy
 def list_of_files(directory, extension):
     files_names = []
     for filename in os.listdir(directory):
@@ -68,7 +69,6 @@ def _TF_Score(file):
     return(_wordOccurences(text))
 
 def list_tfScores(cleaned_d):
-    global l 
     l = []
     for file in os.listdir(cleaned_d):
         f = open(cleaned_d + "/" + file, "r", encoding="utf-8")
@@ -95,9 +95,9 @@ def IDF_score(listOfTFScores):
 
 def TF_IDF_Matrix(idf_dict,list_tf):
     mat = []
-    for key in idf_dict.keys():
+    for dict in list_tf:
         score_list = []
-        for dict in list_tf:
+        for key in idf_dict.keys():
             if key not in dict.keys():
                 score_list.append(0)
             else:
@@ -123,25 +123,67 @@ def question_words_in_corpus(list_words: list, idf_dict: dict):
     return words_in_corpus
 
 def TF_IDF_question(question: str):
-    TfIdf_score = []
+    global TfIdf_vector
+    TfIdf_vector = []
     list_question = question_tokenization(question)
     for word in idf_dict.keys():
         if word not in question_words_in_corpus(list_question, idf_dict):
-            TfIdf_score.append(0)
+            TfIdf_vector.append(0)
         else:
             tfscore = 0
             for term in question_words_in_corpus(list_question, idf_dict):
                 if term == word:
                     tfscore += 1
-            TfIdf_score.append(round(tfscore*idf_dict[word],3))
-    return TfIdf_score
+            TfIdf_vector.append(round(tfscore*idf_dict[word],3))
+    return TfIdf_vector
                 
                 
             
 
 #Calculating similarity
-def cosine_similarity():
-    pass
+def _cosine_similarity(list1, list2):
+    normA = math.sqrt(sum(val**2 for val in list1))
+    normB = math.sqrt(sum(val**2 for val in list2))
+    similarity_score = (numpy.dot(list1, list2))/(normA*normB)
+    return similarity_score   
+
+def most_relevantDoc(tfidf_question, tfidf_corpus, listoffiles):
+    max_similarity = 0
+    max_index = 0
+    for i in range(len(tfidf_corpus)):
+        similarity = _cosine_similarity(tfidf_question, tfidf_corpus[i])
+        if  similarity > max_similarity:
+            max_similarity = similarity
+            max_index = i
+    global file
+    file = listoffiles[max_index]
+    return file
+def max_tfIdfScore():
+    maxWordScore = max(TfIdf_vector)
+    maxIndex = TfIdf_vector.index(maxWordScore)
+    global word
+    word = list(idf_dict.keys())[maxIndex]
+    return word
+    
+def generate_reponse(question : str):
+    question_starters ={
+        "Comment" : "Apres analyse,",
+        "Pourquoi" : "Car,",
+        "Peux-tu" : "Oui, bien sur!"
+    }
+    f = open(os.curdir + "/cleaned/" + file, "r", encoding="utf-8")
+    response = ""
+    for key in question_starters.keys():
+        if key in question:
+            response += question_starters[key]
+    for sentence in f.readlines():
+        if word in sentence:
+            response += f" {sentence}"
+            return response   
+    
+    
+            
+    
     
 
 def menu():
