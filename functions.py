@@ -1,3 +1,5 @@
+#Chatbot functions file, authors: LAM Pascal, LANG Felix
+
 #import Modules
 import os
 from shutil import rmtree
