@@ -1,6 +1,6 @@
 from functions import *
 
-directory = str(input("Enter the directory in which the files are located. (The directory specified should look like this: C:/Users/PC/Documents/Chatbot/speeches)"))
+directory = os.curdir + "/speeches"
 exit = False
 while exit == False:
     menu()
@@ -42,6 +42,16 @@ while exit == False:
         idfScores = IDF_score(tfScores)
         print(TF_IDF_Matrix(idfScores,tfScores))
     elif choice == 9:
-        exit = True
+        corpus = list_of_files(directory,"txt")
+        convertFilesToLowercase(directory)
+        cleaned_d = os.curdir + "/cleaned"
+        removePunctFromFiles(cleaned_d)
+        tfScores = list_tfScores(cleaned_d)
+        idfScores = IDF_score(tfScores)
+        tfidf_corpus = TF_IDF_Matrix(idfScores, tfScores)
+        question = str(input("Enter a question :"))
+        tfidf_question = TF_IDF_question(question)
+        file_to_use = most_relevantDoc(tfidf_question, tfidf_corpus, corpus)
+        print(generate_reponse(question, file_to_use))
     else:
         print("This option does not exist !")
