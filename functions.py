@@ -238,6 +238,7 @@ def menu():
     print("[7]: Display the IDF-Score for each word")
     print("[8]: Display the TF-IDF Matrix")
     print("[9]: Chatbot Mode")
+    print("[10]: Exit")
 
 
 

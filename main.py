@@ -53,5 +53,7 @@ while exit == False:
         tfidf_question = TF_IDF_question(question)
         file_to_use = most_relevantDoc(tfidf_question, tfidf_corpus, corpus)
         print(generate_reponse(question, file_to_use))
+    elif choice == 10:
+        exit == True
     else:
         print("This option does not exist !")
