@@ -1,3 +1,5 @@
+#Chatbot features file, author: LAM Pascal, LANG Felix
+
 from functions import*
 cleaned_d = os.curdir + "/cleaned"
 assert os.path.exists(cleaned_d), "You must first have a 'cleaned directory' before choosing this option"
