@@ -1,4 +1,4 @@
-#Chatbot functions file, authors: LAM Pascal, LANG Felix
+#Chatbot functions file containing the functions necessary to run the main file, authors: LAM Pascal, LANG Felix
 
 #import Modules
 import os
