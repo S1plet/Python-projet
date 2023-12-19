@@ -1,4 +1,4 @@
-#Chatbot main file, authors: LAM Pascal, LANG Felix
+#Chatbot main file containing an interface to allow the user to use different functions of the function file, authors: LAM Pascal, LANG Felix
 
 from functions import *
 
