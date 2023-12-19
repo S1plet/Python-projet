@@ -1,4 +1,4 @@
-#Chatbot features file, author: LAM Pascal, LANG Felix
+#Chatbot features file containing the features that had to be developed, author: LAM Pascal, LANG Felix
 
 from functions import*
 cleaned_d = os.curdir + "/cleaned"
