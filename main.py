@@ -1,3 +1,5 @@
+#Chatbot main file, authors: LAM Pascal, LANG Felix
+
 from functions import *
 
 directory = os.curdir + "/speeches"
